@@ -26,6 +26,8 @@ function civicrm_api3_activity_attachments($params) {
     $files = CRM_Core_BAO_File::getEntityFile('civicrm_activity', $params['activity_id']);
     foreach($files as $k => $f) {
       $files[$k]['url'] = CRM_Utils_System::url('civicrm/file', "reset=1&id={$f['fileID']}&eid={$f['entityID']}", true);
+      $files[$k]['base64_content'] = base64_encode(file_get_contents($f['fullPath']));
+      
     }
     return civicrm_api3_create_success($files, $params, 'Activity', 'Attachments');
   } else {
